@@ -10,70 +10,70 @@
     "build": {
       "executor": "a0:run-commands",
       "options": {
-        "command": "node scripts/open-source-repo-target.mjs build open-source/wasm-analytics-engine",
+        "command": "pnpm run monster -- scripts/open-source-repo-target.mjs build open-source/wasm-analytics-engine",
         "cwd": "."
       }
     },
     "lint": {
       "executor": "a0:run-commands",
       "options": {
-        "command": "node scripts/open-source-repo-target.mjs lint open-source/wasm-analytics-engine",
+        "command": "pnpm run monster -- scripts/open-source-repo-target.mjs lint open-source/wasm-analytics-engine",
         "cwd": "."
       }
     },
     "test": {
       "executor": "a0:run-commands",
       "options": {
-        "command": "node scripts/open-source-repo-target.mjs test open-source/wasm-analytics-engine",
+        "command": "pnpm run monster -- scripts/open-source-repo-target.mjs test open-source/wasm-analytics-engine",
         "cwd": "."
       }
     },
     "typecheck": {
       "executor": "a0:run-commands",
       "options": {
-        "command": "node scripts/open-source-repo-target.mjs typecheck open-source/wasm-analytics-engine",
+        "command": "pnpm run monster -- scripts/open-source-repo-target.mjs typecheck open-source/wasm-analytics-engine",
         "cwd": "."
       }
     },
     "github:push": {
       "executor": "a0:run-commands",
       "options": {
-        "command": "node scripts/open-source-repo-target.mjs github-push open-source/wasm-analytics-engine",
+        "command": "pnpm run monster -- scripts/open-source-repo-target.mjs github-push open-source/wasm-analytics-engine",
         "cwd": "."
       }
     },
     "forge:push": {
       "executor": "a0:run-commands",
       "options": {
-        "command": "node scripts/open-source-repo-target.mjs forge-push open-source/wasm-analytics-engine",
+        "command": "pnpm run monster -- scripts/open-source-repo-target.mjs forge-push open-source/wasm-analytics-engine",
         "cwd": "."
       }
     },
     "push": {
       "executor": "a0:run-commands",
       "options": {
-        "command": "node scripts/open-source-repo-target.mjs push open-source/wasm-analytics-engine",
+        "command": "pnpm run monster -- scripts/open-source-repo-target.mjs push open-source/wasm-analytics-engine",
         "cwd": "."
       }
     },
     "submodule:update-reference": {
       "executor": "a0:run-commands",
       "options": {
-        "command": "node scripts/open-source-repo-target.mjs submodule-update-reference open-source/wasm-analytics-engine",
+        "command": "pnpm run monster -- scripts/open-source-repo-target.mjs submodule-update-reference open-source/wasm-analytics-engine",
         "cwd": "."
       }
     },
     "pr:list": {
       "executor": "a0:run-commands",
       "options": {
-        "command": "node scripts/open-source-repo-target.mjs pr-list open-source/wasm-analytics-engine",
+        "command": "pnpm run monster -- scripts/open-source-repo-target.mjs pr-list open-source/wasm-analytics-engine",
         "cwd": "."
       }
     },
     "pr:merge-all": {
       "executor": "a0:run-commands",
       "options": {
-        "command": "node scripts/open-source-repo-target.mjs pr-merge-all open-source/wasm-analytics-engine",
+        "command": "pnpm run monster -- scripts/open-source-repo-target.mjs pr-merge-all open-source/wasm-analytics-engine",
         "cwd": "."
       }
     }
