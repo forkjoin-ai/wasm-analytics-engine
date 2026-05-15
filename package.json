@@ -16,7 +16,9 @@
     "build:node": "wasm-pack build --target nodejs --out-dir pkg-node",
     "prepublishOnly": "npm run build",
     "publish": "npm publish --access public",
-    "test": "cargo test"
+    "test": "cargo test",
+    "type-check": "echo \"No TypeScript configuration found, skipping typecheck\"",
+    "typecheck": "echo \"No TypeScript configuration found, skipping typecheck\""
   },
   "keywords": [
     "wasm",
