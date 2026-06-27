@@ -1,0 +1,96 @@
+# wasm-analytics-engine — easy-deploy site (driven entirely by this file).
+#
+# Deploy with:  a0 xr deploy
+#
+# Content is sourced from open-source/wasm-analytics-engine/README.md — keep it honest.
+
+name = "wasm-analytics-engine-site"
+compatibility_date = "2025-01-01"
+workers_dev = true
+
+[site]
+kit = "oss-template"
+title = "wasm-analytics-engine — analytics at WebAssembly speed"
+
+[site.project]
+name = "WASM Analytics Engine"
+tagline = "High-performance analytics, compiled to WebAssembly."
+description = "A high-performance WebAssembly analytics engine written in Rust. Metrics computation, event processing, aggregations, and funnel analysis — all running at WASM speed in the browser or Node."
+logo = "hex"
+accent = "#a855f7"
+theme = "dark"
+repo = "forkjoin-ai/wasm-analytics-engine"
+
+[site.sigil]
+seed = "wasm-analytics-engine"
+
+[site.nav]
+links = ["Features|#features", "Quickstart|#quickstart", "FAQ|#faq", "Source|https://forgo.cloud/forkjoin-ai/wasm-analytics-engine"]
+
+[site.hero]
+eyebrow = "Rust · WebAssembly · metrics · events · aggregation"
+install = "npm install @affectively/wasm-analytics-engine"
+cta_primary = "Get started"
+cta_primary_href = "#quickstart"
+cta_secondary = "Browse the source"
+cta_secondary_href = "https://forgo.cloud/forkjoin-ai/wasm-analytics-engine"
+
+[[site.features]]
+icon = "gauge"
+title = "Metrics computation"
+body = "Calculate analytics metrics at WASM speed — pageviews, sessions, and custom aggregates computed in compiled Rust, not interpreted JavaScript."
+
+[[site.features]]
+icon = "zap"
+title = "Event processing"
+body = "Process and transform raw event streams into structured analytics with process_events, handling the hot path entirely inside WebAssembly."
+
+[[site.features]]
+icon = "layers"
+title = "Aggregations"
+body = "Efficient count, sum, and average operations over event data via aggregate_metrics — built for throughput on large event volumes."
+
+[[site.features]]
+icon = "branch"
+title = "Funnel analysis"
+body = "Compute conversion funnels across ordered steps with compute_funnel — e.g. signup → verify → purchase — directly from your event stream."
+
+[site.quickstart]
+title = "Compute analytics in the browser"
+
+[[site.quickstart.tab]]
+label = "Install"
+code = "npm install @affectively/wasm-analytics-engine"
+
+[[site.quickstart.tab]]
+label = "Use"
+code = "import init, { process_events, compute_funnel, aggregate_metrics } from '@affectively/wasm-analytics-engine';\n\nawait init();\n\nconst processed = process_events(rawEvents);\nconst funnel = compute_funnel(events, ['signup', 'verify', 'purchase']);\nconst metrics = aggregate_metrics(events, ['pageviews', 'sessions']);"
+
+[[site.faq]]
+q = "What is wasm-analytics-engine?"
+a = "A high-performance analytics engine written in Rust and compiled to WebAssembly. It handles metrics computation, event processing, aggregations, and funnel analysis at WASM speed."
+
+[[site.faq]]
+q = "How do I use it?"
+a = "Install with npm install @affectively/wasm-analytics-engine, then call await init() to load the WASM module before using process_events, compute_funnel, and aggregate_metrics."
+
+[[site.faq]]
+q = "What functions does it expose?"
+a = "process_events transforms raw event streams, aggregate_metrics computes count/sum/average aggregations, and compute_funnel calculates conversion funnels across ordered steps."
+
+[[site.faq]]
+q = "Can it run in Node as well as the browser?"
+a = "Yes. The default build targets the web; a Node build is also available via wasm-pack with the nodejs target."
+
+[site.footer]
+quote = "Analytics at WebAssembly speed — metrics, events, aggregations, and funnels in compiled Rust."
+license = "MIT"
+copyright = "© 2026 AFFECTIVELY · wasm-analytics-engine contributors"
+
+[[site.footer.column]]
+title = "Project"
+links = ["Features|#features", "Quickstart|#quickstart", "FAQ|#faq"]
+
+[[site.footer.column]]
+title = "More"
+links = ["Source|https://forgo.cloud/forkjoin-ai/wasm-analytics-engine", "AFFECTIVELY|https://affectively.ai"]

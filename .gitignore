@@ -11,3 +11,4 @@ coverage
 
 # Mandatory monorepo ignores (synced by a0)
 .wrangler/
+.x-ranger/
