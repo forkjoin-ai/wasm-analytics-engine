@@ -1,4 +1,5 @@
 use super::{Reflection, TrendDataPoint, EmotionCount, TrendsResult};
+use crate::calendar::{average, days_in_month, parse_date, split_date_time};
 use std::collections::HashMap;
 
 /// Compute trends over time (daily, weekly, monthly)
@@ -19,17 +20,16 @@ pub fn compute_trends(
         let weekly = get_week_key(timestamp.year(), timestamp.month(), timestamp.day);
         let monthly = format!("{:04}-{:02}", timestamp.year(), timestamp.month());
 
-        let emotion_id = reflection.emotion_id.clone().unwrap_or_else(|| "unknown".to_string());
-        let emotion_name = reflection.emotion_name.clone().unwrap_or_else(|| "Unknown".to_string());
+        let emotion_id = reflection.emotion_id.as_deref().unwrap_or("unknown");
+        let emotion_name = reflection.emotion_name.as_deref().unwrap_or("Unknown");
 
-        // Update daily
-        update_trend_data(&mut daily_map, &daily, &emotion_id, &emotion_name, reflection.intensity);
-
-        // Update weekly
-        update_trend_data(&mut weekly_map, &weekly, &emotion_id, &emotion_name, reflection.intensity);
-
-        // Update monthly
-        update_trend_data(&mut monthly_map, &monthly, &emotion_id, &emotion_name, reflection.intensity);
+        for (map, period) in [
+            (&mut daily_map, &daily),
+            (&mut weekly_map, &weekly),
+            (&mut monthly_map, &monthly),
+        ] {
+            update_trend_data(map, period, emotion_id, emotion_name, reflection.intensity);
+        }
     }
 
     TrendsResult {
@@ -73,11 +73,7 @@ fn format_trends(map: HashMap<String, TrendData>) -> Vec<TrendDataPoint> {
     let mut trends: Vec<TrendDataPoint> = map
         .into_iter()
         .map(|(date, data)| {
-            let average_intensity = if !data.intensities.is_empty() {
-                Some(data.intensities.iter().sum::<f64>() / data.intensities.len() as f64)
-            } else {
-                None
-            };
+            let average_intensity = average(&data.intensities);
 
             let top_emotion = data
                 .emotions
@@ -111,17 +107,8 @@ fn get_week_key(year: i32, month: u32, day: u32) -> String {
         return format!("{:04}-W01", year);
     }
 
-    // Calculate day of year
-    let days_in_months = [31u32, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-    let is_leap = (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
-    let mut day_of_year = day;
-    for i in 0..(month - 1) as usize {
-        day_of_year += days_in_months[i];
-    }
-    // Add leap day for dates after February in a leap year
-    if is_leap && month > 2 {
-        day_of_year += 1;
-    }
+    // Day of year: days in the preceding months (leap-aware) plus the day itself
+    let day_of_year = day + (1..month).map(|m| days_in_month(year, m)).sum::<u32>();
 
     // Clamp week to 1-53 range
     let week = ((day_of_year as f64 / 7.0).ceil() as u32).max(1).min(53);
@@ -130,42 +117,9 @@ fn get_week_key(year: i32, month: u32, day: u32) -> String {
 
 /// Simple timestamp parser for trends (only needs date components)
 fn parse_timestamp(ts: &str) -> Option<SimpleDateTime> {
-    let parts: Vec<&str> = ts.split('T').collect();
-    if parts.len() != 2 {
-        return None;
-    }
-
-    let date_parts: Vec<&str> = parts[0].split('-').collect();
-    if date_parts.len() != 3 {
-        return None;
-    }
-
-    let year = date_parts[0].parse::<i32>().ok()?;
-    let month = date_parts[1].parse::<u32>().ok()?;
-    let day = date_parts[2].parse::<u32>().ok()?;
-
-    // Validate month and day ranges
-    if month < 1 || month > 12 {
-        return None;
-    }
-    let max_day = match month {
-        1 | 3 | 5 | 7 | 8 | 10 | 12 => 31,
-        4 | 6 | 9 | 11 => 30,
-        2 => {
-            let is_leap = (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
-            if is_leap { 29 } else { 28 }
-        }
-        _ => return None,
-    };
-    if day < 1 || day > max_day {
-        return None;
-    }
-
-    Some(SimpleDateTime {
-        year,
-        month,
-        day,
-    })
+    let (date_part, _time_part) = split_date_time(ts)?;
+    let (year, month, day) = parse_date(date_part)?;
+    Some(SimpleDateTime { year, month, day })
 }
 
 struct SimpleDateTime {
@@ -216,6 +170,9 @@ mod tests {
         // March 1 in a leap year
         let key = get_week_key(2024, 3, 1);
         assert!(key.starts_with("2024-W"));
+        // Day 64 in a leap year vs day 63 in a common year
+        assert_eq!(get_week_key(2024, 3, 4), "2024-W10");
+        assert_eq!(get_week_key(2023, 3, 4), "2023-W09");
     }
 
     #[test]

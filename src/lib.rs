@@ -7,6 +7,7 @@ pub fn init() {
     console_error_panic_hook::set_once();
 }
 
+mod calendar;
 mod time_patterns;
 mod co_occurrence;
 mod trends;

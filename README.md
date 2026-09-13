@@ -1,5 +1,9 @@
 # @affectively/wasm-analytics-engine
 
+## Purpose, architecture, and failure boundaries
+
+The purpose of this architecture is bounded analytics in WASM. Typed input and output schemas, memory limits, and deterministic operations form the API contract. Malformed data, allocation failure, non-finite output, or unsupported modules reject. Treat modules and datasets as untrusted; tests do not establish causal interpretation.
+
 High-performance WebAssembly analytics engine written in Rust.
 
 [![npm](https://img.shields.io/npm/v/@affectively/wasm-analytics-engine.svg)](https://www.npmjs.com/package/@affectively/wasm-analytics-engine)
