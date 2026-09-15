@@ -17,6 +17,7 @@
       }
     },
     "test": {
+      "cache": false,
       "executor": "a0:run-commands",
       "options": {
         "cwd": "open-source/wasm-analytics-engine",
